@@ -77,6 +77,11 @@ def main():
     with open(OUTPUT, "w", encoding="utf-8") as f:
         json.dump(catalog, f, ensure_ascii=False, indent=2)
     print(f"Saved {len(catalog)} makes to {OUTPUT}")
+    js_output = OUTPUT.parent / "catalog-data.js"
+    with open(js_output, "w", encoding="utf-8") as f:
+        f.write("window.CATALOG_DATA = " + json.dumps(catalog, ensure_ascii=False, indent=2) + ";
+")
+    print(f"Also wrote {js_output}")
 
 def get_soup(session):
     return fetch(BASE_URL, session)

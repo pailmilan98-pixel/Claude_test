@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadCatalog() {
+  if (window.CATALOG_DATA && window.CATALOG_DATA.length > 0) {
+    catalog = window.CATALOG_DATA;
+    populateMakes();
+    return;
+  }
   try {
     const r = await fetch('data/catalog.json');
     if (!r.ok) throw new Error('HTTP ' + r.status);
