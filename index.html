@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoTanacsado</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <span class="brand-icon">&#128664;</span>
+        <span class="brand-name" data-i18n="brand">AutoTanacsado</span>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn-api-key" id="apiKeyBtn" onclick="openApiKeyModal()">
+          <span>&#128273;</span>
+          <span data-i18n="set_api_key">API kulcs</span>
+        </button>
+        <div class="lang-switcher">
+          <button class="lang-btn" id="lang-hu" onclick="setLanguage('hu')">
+            <span class="flag">&#127469;&#127482;</span> HU
+          </button>
+          <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">
+            <span class="flag">&#127468;&#127463;</span> EN
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title" data-i18n="hero_title">Talald meg az alomautod</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">AI-alapu tanacsadas a legjobb autovassarlasi dontesehez</p>
+    </div>
+  </section>
+
+  <section class="selector-section">
+    <div class="container">
+      <div class="card selector-card">
+        <h2 class="section-title" data-i18n="select_car">Valassz autot</h2>
+        <div class="selector-grid">
+          <div class="form-group">
+            <label data-i18n="make">Gyartmany</label>
+            <select id="makeSelect" class="form-select" onchange="onMakeChange()">
+              <option value="" data-i18n-opt="select_make">-- Gyartmany --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="model">Modell</label>
+            <select id="modelSelect" class="form-select" onchange="onModelChange()" disabled>
+              <option value="" data-i18n-opt="select_model">-- Modell --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="type">Tipus / Kivitel</label>
+            <select id="typeSelect" class="form-select" onchange="onTypeChange()" disabled>
+              <option value="" data-i18n-opt="select_type">-- Tipus --</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <div class="form-group">
+            <label data-i18n="year_from">Evjarattol</label>
+            <input type="number" id="yearFrom" class="form-input" min="1980" max="2025" placeholder="pl. 2015">
+          </div>
+          <div class="form-group">
+            <label data-i18n="year_to">Evjaratig</label>
+            <input type="number" id="yearTo" class="form-input" min="1980" max="2025" placeholder="pl. 2023">
+          </div>
+          <div class="form-group">
+            <label data-i18n="price_max">Max. ar (Ft)</label>
+            <input type="number" id="priceMax" class="form-input" placeholder="pl. 5000000">
+          </div>
+          <div class="form-group">
+            <label data-i18n="km_max">Max. km</label>
+            <input type="number" id="kmMax" class="form-input" placeholder="pl. 150000">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-primary" id="searchBtn" onclick="onSearch()" disabled>
+            <span>&#128269;</span>
+            <span data-i18n="search">Hirdetes kereses</span>
+          </button>
+          <button class="btn-secondary" id="adviceBtn" onclick="getAiAdvice()" disabled>
+            <span>&#129302;</span>
+            <span data-i18n="get_advice">AI Tanacsadas</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="advice-section" id="adviceSection" style="display:none;">
+    <div class="container">
+      <div class="card advice-card">
+        <div class="advice-header">
+          <h2 class="section-title" data-i18n="ai_advice">AI Tanacsado</h2>
+          <div class="selected-car-badge" id="selectedCarBadge"></div>
+        </div>
+        <div class="advice-loading" id="adviceLoading" style="display:none;">
+          <div class="spinner"></div>
+          <p data-i18n="loading_advice">Tanacsok generalasa...</p>
+        </div>
+        <div class="advice-content" id="adviceContent"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="listings-section" id="listingsSection" style="display:none;">
+    <div class="container">
+      <div class="card">
+        <div class="listings-header">
+          <h2 class="section-title" data-i18n="listings">Talalatok</h2>
+          <div class="source-tabs">
+            <button class="tab-btn active" data-source="all" data-i18n="all">Mind</button>
+            <button class="tab-btn" data-source="hasznaltauto">hasznaltauto.hu</button>
+            <button class="tab-btn" data-source="mobile">mobile.de</button>
+            <button class="tab-btn" data-source="autoscout">autoscout24</button>
+          </div>
+        </div>
+        <div class="listings-meta" id="listingsMeta"></div>
+        <div class="listings-grid" id="listingsGrid"></div>
+        <div class="search-links" id="searchLinks"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p data-i18n="footer_disclaimer">Ez az oldal szemelyes, tajekoztat jellegu segedzeszköz. Az adatok naponta frissulnek.</p>
+      <p class="footer-update" id="footerUpdate"></p>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="apiKeyModal" style="display:none;" onclick="handleModalClick(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 data-i18n="api_key_title">Claude API Kulcs</h3>
+        <button class="modal-close" onclick="closeApiKeyModal()">&#10005;</button>
+      </div>
+      <div class="modal-body">
+        <p data-i18n="api_key_desc">Add meg az Anthropic API kulcsodat. Csak a munkamenet idejere tarolodik (sessionStorage).</p>
+        <div class="form-group">
+          <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-ant-api03-...">
+        </div>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="saveApiKey()" data-i18n="save">Mentes</button>
+          <button class="btn-secondary" onclick="closeApiKeyModal()" data-i18n="cancel">Megse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/listings.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
