@@ -21,7 +21,7 @@ const translations = {
     loading_advice: 'Tan\u00e1csok gener\u00e1l\u00e1sa...',
     listings: 'Tal\u00e1latok',
     all: 'Mind',
-    footer_disclaimer: 'Ez az oldal szem\u00e9lyes, t\u00e1j\u00e9koztat\u00f3 jelleg\u0171 seg\u00e9desz k\u00f6z. Az adatok naponta friss\u00fclnek.',
+    footer_disclaimer: 'Ez az oldal szem\u00e9lyes, t\u00e1j\u00e9koztat\u00f3 jelleg\u0171 seg\u00e9deszk\u00f6z. Az adatok naponta friss\u00fclnek.',
     api_key_title: 'Claude API Kulcs be\u00e1ll\u00edt\u00e1sa',
     api_key_desc: 'Add meg az Anthropic API kulcsodat. Csak a munkamenet idej\u00e9re t\u00e1rol\u00f3dik (sessionStorage).',
     save: 'Ment\u00e9s',
